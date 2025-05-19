@@ -2,6 +2,7 @@ package com.mentoria.indra.bank.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -14,8 +15,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.mentoria.indra.bank.domain.Customer;
 import com.mentoria.indra.bank.domain.DocumentType;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
+@Slf4j
 class CustomerRepositoryIT {
 	
 	
@@ -89,6 +95,8 @@ class CustomerRepositoryIT {
 		Customer customer = null;
 		Optional<Customer> customerOptional = null;
 		
+		assertTrue(customerRepository.findById(idCustomer).isPresent(), "No enconttramos el customer");
+		
 		customer = customerRepository.findById(idCustomer).get();
 		// Act
 		
@@ -97,6 +105,26 @@ class CustomerRepositoryIT {
 		// Assert
 		
 		assertNotNull(customerOptional.isPresent(), "El objeto Customer está vacío y no se pudo borrar");
+		
+	}
+	
+	@Test
+	@Order(5)
+	void debeConsultarTodosLosCustomers() {
+		// Arrange
+		List<Customer> customers = null;
+		
+		
+		// Act
+		customers = customerRepository.findAll();
+		customers.forEach(customer -> log.info(customer.getName()));
+		
+		
+		
+		// Assert
+		assertFalse(customers.isEmpty(), "No consulto Customers");
+		
+		
 		
 	}
 
