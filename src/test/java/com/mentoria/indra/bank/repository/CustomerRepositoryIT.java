@@ -2,6 +2,8 @@ package com.mentoria.indra.bank.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -75,6 +77,26 @@ class CustomerRepositoryIT {
 		// Assert
 		
 		assertNotNull(customer, "El objeto Customer está vacío y no se pudo modificar");
+		
+	}
+	
+	@Test
+	@Order(4)
+	void debeBorrarUnCustomer() {
+		// Arrange
+		Integer idCustomer = 14836554;
+		
+		Customer customer = null;
+		Optional<Customer> customerOptional = null;
+		
+		customer = customerRepository.findById(idCustomer).get();
+		// Act
+		
+		customerRepository.delete(customer);
+		customerOptional = customerRepository.findById(idCustomer);
+		// Assert
+		
+		assertNotNull(customerOptional.isPresent(), "El objeto Customer está vacío y no se pudo borrar");
 		
 	}
 
